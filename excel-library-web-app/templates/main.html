@@ -1,0 +1,96 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main - Omoikane Excel Library</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="icon" href="{% static 'image/background.ico' %}" type="image/x-icon">
+</head>
+<body>
+    <div class="table-container">
+        <h1>Omoikane Excel Library</h1>
+        <div class="form-container">
+            <form id="book-form" method="" action="">
+                <div class="input-row">
+                    <input type="text" id="bName" name="bName" value="" placeholder="Book name">
+                    <input type="text" id="aName" name="aName" value="" placeholder="Author name">
+                    <input type="text" id="pNumber" name="pNumber" value="" placeholder="Page number">
+                    <input type="text" id="genre" name="genre" value="" placeholder="Genre">
+                    <input type="text" id="eNumber" name="eNumber" value="" placeholder="Book edition number">
+                    <input type="text" id="pName" name="pName" value="" placeholder="Book publisher name">
+                </div>
+                <div class="button-container">
+                    <button type="button" onclick="updateAction('add')">Add Book</button>
+                    <button type="button" onclick="updateAction('change')">Change Book</button>
+                    <button type="button" onclick="updateAction('remove')">Remove Book</button>
+                    <button type="button" onclick="updateAction('get')">Search Book</button>
+                </div>
+            </form>
+            <form method="GET" action="{% url 'excelAPIBackup' %}">
+                <button type="submit">Backup Excel File</button>
+            </form>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Book Name</th>
+                    <th>Author Name</th>
+                    <th>Page Number</th>
+                    <th>Genre</th>
+                    <th>Edition Number</th>
+                    <th>Publisher Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if books %}
+                {% for book in books %}
+                    <tr>
+                        <td>{{ book.bName }}</td>
+                        <td>{{ book.aName }}</td>
+                        <td>{{ book.pNumber }}</td>
+                        <td>{{ book.genre }}</td>
+                        <td>{{ book.eNumber }}</td>
+                        <td>{{ book.pName }}</td>
+                    </tr>
+                {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">No books available :'(</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function updateAction(operation) {
+            var form = document.getElementById('book-form');
+
+            switch (operation) {
+                case "get":
+                    form.method = 'GET';
+                    form.action = "{% url 'excelAPIGet' %}";
+                    break;
+                case "add":
+                    form.method = 'POST';
+                    form.action = "{% url 'excelAPIAdd' %}";
+                    break;
+                case "remove":
+                    form.method = 'POST';
+                    form.action = "{% url 'excelAPIRemove' %}";
+                    break;
+                case "change":
+                    form.method = 'POST';
+                    form.action = "{% url 'excelAPIChange' %}";
+                    break;
+                default:
+                    return;
+            }
+
+            form.submit();
+        }
+    </script>
+</body>
+</html>
