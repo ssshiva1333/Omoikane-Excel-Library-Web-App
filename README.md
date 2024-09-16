@@ -1,2 +1,4 @@
 # Omoikane-Excel-Library-Web-App
-It is a web application which is developed by using Django. It uses excel to store books.
+It is a web application which is developed by using Django.
+It uses excel to store books.
+It is easy to use.
